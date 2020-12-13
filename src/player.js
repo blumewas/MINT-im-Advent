@@ -9,8 +9,6 @@ export class Player {
         this.playerObj.setCollideWorldBounds(true);
 
         this.createAnimations(scene, color);
-
-        
     }
 
     animate(direction='none') {
@@ -20,7 +18,7 @@ export class Player {
                 this.playerObj.anims.play("left_" + color);
                 break;
             case 'right':
-                    this.playerObj.anims.play("rigth_" + color);
+                    this.playerObj.anims.play("right_" + color);
                     break;
             case 'up':
                 this.playerObj.anims.play("up_" + color);
@@ -45,6 +43,31 @@ export class Player {
             default:
                 this.playerObj.setVelocityX(0);
                 break;
+        }
+
+        switch(vertical) {
+            case 'up':
+                this.playerObj.setVelocityY(-160);
+                break;
+            case 'down':
+                this.playerObj.setVelocityY(160);
+                break;
+            default:
+                this.playerObj.setVelocityY(0);
+                break;
+        }
+
+        const v = this.playerObj.body.velocity;
+        if (v.x > 0) {
+            this.animate('right');
+        } else if (v.x < 0) {
+            this.animate('left');
+        } else if (v.y > 0) {
+            this.animate('down');
+        } else if (v.y < 0) {
+            this.animate('up');
+        } else {
+            this.animate('none');
         }
     }
 
