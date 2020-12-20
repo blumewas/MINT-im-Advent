@@ -4,6 +4,9 @@ import { Client } from './client';
 
 import bg from "./assets/bg.png";
 import orange_sprite from "./assets/player_orange.png";
+import green_sprite from "./assets/player_green.png";
+import pink_sprite from "./assets/player_pink.png";
+import cyan_sprite from "./assets/player_cyan.png";
 
 const scene = new Scene("Client");
 
@@ -16,6 +19,18 @@ scene.preload = function() {
 
     this.load.spritesheet('orange_sprite',
     orange_sprite,
+    { frameWidth: 32, frameHeight: 32 });
+
+    this.load.spritesheet('green_sprite',
+    green_sprite,
+    { frameWidth: 32, frameHeight: 32 });
+
+    this.load.spritesheet('pink_sprite',
+    pink_sprite,
+    { frameWidth: 32, frameHeight: 32 });
+
+    this.load.spritesheet('cyan_sprite',
+    cyan_sprite,
     { frameWidth: 32, frameHeight: 32 });
 }
 
@@ -33,7 +48,11 @@ scene.create = function() {
 
 scene.update = function (){
     const cursors = this.cursors;
-    const player = this.players[0];
+    const player = Client.getCurrentPlayer();
+    console.log(player);
+    if (!player) {
+        return;
+    }
 
     let vertical;
     let horizontal;
@@ -49,6 +68,15 @@ scene.update = function (){
         vertical = 'down';
     }
     player.move(horizontal, vertical);
+
+    const data = {
+        horizontal: horizontal,
+        vertical: vertical,
+        player_nr: player.nr,
+        x: player.playerObj.x,
+        y: player.playerObj.y,
+    }
+    Client.socket.emit('move', data);
 }
 
 export default {

@@ -1,6 +1,6 @@
 export class Player {
-    constructor(nummer, color, name, scene, x = 50, y = 50) {
-        this.nummer = nummer;
+    constructor(nr, color, name, scene, x = 50, y = 50) {
+        this.nr = nr;
         this.color = color;
         this.name = name;
         this.scene = scene;

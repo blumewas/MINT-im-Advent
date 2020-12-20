@@ -11,6 +11,11 @@ Client.getPlayer = function(nr) {
     return Client.players.find((player) => player.nr === nr);
 };
 
+Client.getCurrentPlayer = function() {
+    console.log(Client.clientId);
+    return Client.getPlayer(Client.clientId);
+}
+
 Client.addPlayer = function(nr, color, name, x, y) {
     Client.players.push(new Player(nr, color, name, config.scene, x, y));
 };
@@ -19,6 +24,7 @@ Client.removePlayer = function(nr) {
     const player = Client.getPlayer(nr);
     if (player) {
         player.playerObj.destroy();
+        Client.players = Client.players.filter((player) => nr !== player.nr);
     }
 };
 
@@ -40,12 +46,22 @@ Client.socket.on('move', function(data) {
     }
 });
 
-Client.socket.on('remove', function(data) {
-
+Client.socket.on('remove', function(nr) {
+    Client.removePlayer(nr);
 });
 
-Client.socket.on('allplayers', function(data) {
-
+Client.socket.on('allplayers', function(players) {
+    console.log(players);
+    for(const playerData of players) {
+        const player = playerData.player;
+        if (!Client.clientId) {
+            const client_key = playerData.client_key;
+            if (client_key === Client.socket.id) {
+                Client.clientId = player.id;
+            }
+        }
+        Client.addPlayer(player.id, player.color, player.name, player.x, player.y);
+    }
 });
 
 export { Client };
