@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { Scene } from "phaser";
-import { Player } from './player';
+import { Client } from './client';
 
 import bg from "./assets/bg.png";
 import orange_sprite from "./assets/player_orange.png";
@@ -9,7 +9,6 @@ const scene = new Scene("Client");
 
 scene.init = function() {
     this.cursors = this.input.keyboard.createCursorKeys();
-    this.players = [];
 }
 
 scene.preload = function() {
@@ -29,10 +28,7 @@ scene.create = function() {
         }
     }
 
-    const player = new Player(1, "orange", "Andreas", this);
-    this.players.push(player);
-
-    this.cameras.main.startFollow(player.playerObj, true);
+    Client.start();
 }
 
 scene.update = function (){

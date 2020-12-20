@@ -1,11 +1,11 @@
 export class Player {
-    constructor(nummer, color, name, scene) {
+    constructor(nummer, color, name, scene, x = 50, y = 50) {
         this.nummer = nummer;
         this.color = color;
         this.name = name;
         this.scene = scene;
 
-        this.playerObj = scene.physics.add.sprite(50, 50, color + "_sprite");
+        this.playerObj = scene.physics.add.sprite(x, y, color + "_sprite");
         this.playerObj.setCollideWorldBounds(true);
 
         this.createAnimations(scene, color);
